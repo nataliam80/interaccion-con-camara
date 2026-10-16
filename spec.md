@@ -41,7 +41,9 @@ Cuando la mano deja de detectarse en cualquier momento, el juego entra en pausa 
 - **Velocidad:** constante, no aumenta con el tiempo.
 - **Puntuación:** cuenta únicamente el tiempo transcurrido desde que empieza la partida.
 - **Dificultad:** constante, no progresiva.
-- **Obstáculos:** cuadrados, todos del mismo tamaño.
+- **Obstáculos:** cuadrados, todos del mismo tamaño, de dos tipos:
+  - **En el piso:** se esquivan saltando (1 dedo).
+  - **En el aire (a la altura del personaje):** se esquivan agachándose (2 dedos).
 - **Colisión:** si el personaje golpea un obstáculo, la partida termina.
 - **Fin de partida:** se muestra el puntaje final con un botón para reiniciar.
 

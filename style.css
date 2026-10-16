@@ -41,7 +41,32 @@ canvas {
   border-radius: 8px;
   background: #000;
   transform: scaleX(-1); /* espejo tipo selfie */
+  object-fit: cover;
   z-index: 10;
+}
+
+#cameraStatus {
+  position: absolute;
+  top: 135px;
+  right: 10px;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 11;
+  pointer-events: none;
+  user-select: none;
+}
+
+#cameraStatus.ok {
+  background: rgba(0, 255, 136, 0.2);
+  color: #00ff88;
+  border: 1px solid #00ff88;
+}
+
+#cameraStatus.off {
+  background: rgba(255, 60, 60, 0.2);
+  color: #ff4444;
+  border: 1px solid #ff4444;
 }
 
 /* Puntuaci�n */

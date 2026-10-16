@@ -13,13 +13,17 @@ class Game {
     this.score = 0;
     this.startTime = 0;
 
+    // Suelo (y=0 arriba, y crece hacia abajo)
+    this.groundY = 350;
+
     // Personaje (posici�n X fija, solo se mueve en Y con las animaciones)
     this.char = {
       x: 100,
-      y: 300,
+      y: 300,           // cabeza cuando est� de pie
       width: 40,
       height: 50,
-      baseY: 300,
+      baseY: 300,       // posici�n de pie (cabeza)
+      groundY: 350,     // pies en el suelo
       vy: 0,
       gravity: 0.8,
       jumpForce: -13,
@@ -30,14 +34,16 @@ class Game {
       stopTimer: 0
     };
 
-    // Obst\u00e1culos: cuadrados, mismo tama�o, velocidad constante
+    // Obst�culos: cuadrados, mismo tama�o, velocidad constante
+    // Tipo 'floor': en el suelo (se esquiva saltando).
+    // Tipo 'air': en el aire, altura cabeza (se esquiva agachando).
     this.obstacles = [];
     this.obstacleTimer = 0;
-    this.obstacleInterval = 90; // frames entre obst\u00e1culos
+    this.obstacleInterval = 90;
     this.obstacleSize = 40;
     this.gameSpeed = 6;
 
-    // Fondo (se desplaza cuando el personaje act\u00faa / avanza)
+    // Fondo (se desplaza cuando avanza el runner)
     this.bgX = 0;
 
     // Detector de manos
@@ -98,7 +104,6 @@ class Game {
     this.cameraErrorEl.classList.add('hidden');
   }
 
-  // Ejecutar acci�n de personaje seg�n gesto detectado
   handleGesture() {
     const gesture = this.currentGesture;
 
@@ -125,13 +130,13 @@ class Game {
     if (this.char.isJumping) return;
     this.char.isCrouching = true;
     this.char.height = 30;
-    this.char.y = this.char.baseY + 20;
+    this.char.y = this.char.baseY + 20; // cabeza baja, pies siguen en el suelo
     this.char.crouchTimer = 30; // frames agachado
   }
 
   stopChar() {
     this.char.isStopped = true;
-    this.char.stopTimer = 60; // frames detenido
+    this.char.stopTimer = 60;
   }
 
   update() {
@@ -173,25 +178,25 @@ class Game {
         }
       }
 
-      // El fondo se desplaza constantemente (runner avanza autom\u00e1ticamente)
+      // El fondo se desplaza constantemente (runner avanza autom�ticamente)
       this.bgX -= this.gameSpeed;
       if (this.bgX <= -this.canvas.width) {
         this.bgX = 0;
       }
 
-      // Generar obst\u00e1culos
+      // Generar obst�culos (tipo aleatorio: suelo o aire)
       this.obstacleTimer++;
       if (this.obstacleTimer >= this.obstacleInterval) {
         this.spawnObstacle();
         this.obstacleTimer = 0;
       }
 
-      // Mover y chequear obst\u00e1culos
+      // Mover y chequear obst�culos
       for (let i = this.obstacles.length - 1; i >= 0; i--) {
         const obs = this.obstacles[i];
         obs.x -= this.gameSpeed;
 
-        // Colisi\u00f3n
+        // Colisi�n AABB
         if (this.checkCollision(this.char, obs)) {
           this.gameOver();
         }
@@ -205,12 +210,21 @@ class Game {
   }
 
   spawnObstacle() {
-    const obs = {
+    const type = Math.random() < 0.5 ? 'floor' : 'air';
+    let y;
+    if (type === 'floor') {
+      // En el suelo: pies en groundY, sube hacia arriba
+      y = this.groundY - this.obstacleSize;
+    } else {
+      // En el aire: altura cabeza del personaje de pie
+      y = this.char.baseY - this.obstacleSize;
+    }
+    this.obstacles.push({
       x: this.canvas.width,
-      y: this.char.baseY - this.obstacleSize,
-      size: this.obstacleSize
-    };
-    this.obstacles.push(obs);
+      y: y,
+      size: this.obstacleSize,
+      type: type
+    });
   }
 
   checkCollision(rect1, rect2) {
@@ -232,24 +246,22 @@ class Game {
   }
 
   draw() {
-    // Limpieza
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     if (this.state === 'start') return;
 
-    // Fondo con movimiento (rayas del suelo)
     this.drawBackground();
 
     // Suelo
     this.ctx.fillStyle = '#4a4a4a';
-    this.ctx.fillRect(0, this.char.baseY + this.char.height, this.canvas.width, 100);
+    this.ctx.fillRect(0, this.groundY, this.canvas.width, this.canvas.height - this.groundY);
     this.ctx.fillStyle = '#3a3a3a';
-    this.ctx.fillRect(0, this.char.baseY + this.char.height + 100, this.canvas.width, 100);
+    this.ctx.fillRect(0, this.groundY + 60, this.canvas.width, 60);
 
     // Personaje
     this.drawCharacter();
 
-    // Obst\u00e1culos
+    // Obst�culos
     this.ctx.fillStyle = '#e74c3c';
     this.ctx.strokeStyle = '#c0392b';
     this.ctx.lineWidth = 2;
@@ -258,7 +270,6 @@ class Game {
       this.ctx.strokeRect(obs.x, obs.y, obs.size, obs.size);
     }
 
-    // Overlay de pausa dibujado en canvas
     if (this.state === 'paused') {
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
@@ -270,7 +281,6 @@ class Game {
   }
 
   drawBackground() {
-    // Rayas de suelo que se desplazan para simular movimiento del fondo
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
     this.ctx.lineWidth = 2;
     this.ctx.beginPath();
@@ -279,8 +289,8 @@ class Game {
     const start = Math.floor((this.bgX % stripeSpacing) - stripeSpacing);
     for (let x = start; x < this.canvas.width + stripeSpacing; x += stripeSpacing) {
       const sx = x - this.bgX;
-      this.ctx.moveTo(sx, this.char.baseY + this.char.height);
-      this.ctx.lineTo(sx + stripeLen, this.char.baseY + this.char.height + 30);
+      this.ctx.moveTo(sx, this.groundY);
+      this.ctx.lineTo(sx + stripeLen, this.groundY + 30);
     }
     this.ctx.stroke();
   }
@@ -318,19 +328,17 @@ class Game {
     this.update();
     this.draw();
 
-    // Gesti\u00f3n de estados seg�n detecci\u00f3n de manos
+    // Gesti�n de estados seg�n detecci�n de manos
     if (this.detector && this.detector.isRunning) {
       const gesture = this.detector.getCurrentGesture();
 
       if (this.state === 'playing') {
         if (gesture === 'pause') {
-          // Sin mano: pausar
           this.state = 'paused';
           this.overlayPaused.classList.remove('hidden');
           this.overlayPaused.classList.add('active');
           this.overlayMultiHand.classList.add('hidden');
         } else if (gesture === 'multi') {
-          // Dos o m\u00e1s manos: advertencia, juego congelado
           this.overlayMultiHand.classList.remove('hidden');
           this.overlayMultiHand.classList.add('active');
           this.overlayPaused.classList.add('hidden');
@@ -339,13 +347,11 @@ class Game {
           this.overlayMultiHand.classList.add('hidden');
         }
       } else if (this.state === 'paused') {
-        // Volver a jugar s\u00f3lo con una mano detectada (cualquier gesto v\u00e1lido o mano presente)
         if (gesture !== 'pause' && gesture !== 'multi') {
           this.state = 'playing';
           this.overlayPaused.classList.add('hidden');
           this.overlayPaused.classList.remove('active');
           this.overlayMultiHand.classList.add('hidden');
-          // Ajustar tiempo para no perder lo transcurrido en pausa
           this.startTime = Date.now() - this.score * 1000;
         } else if (gesture === 'multi') {
           this.overlayMultiHand.classList.remove('hidden');

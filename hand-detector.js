@@ -14,6 +14,8 @@ class HandDetector {
     this.isRunning = false;
     this.cameraError = false;
     this.cameraErrorMessage = '';
+    this.statusEl = document.getElementById('cameraStatus');
+    this.updateStatus('off', 'C�mara: iniciando...');
   }
 
   async init() {
@@ -32,7 +34,7 @@ class HandDetector {
       this.hands.onResults((results) => this.onResults(results));
 
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: 640, height: 480, facingMode: 'user' }
+        video: { width: 640, height: 480 }
       });
 
       this.videoElement.srcObject = stream;
@@ -50,10 +52,12 @@ class HandDetector {
 
       this.camera.start();
       this.isRunning = true;
+      this.updateStatus('ok', 'C�mara activa');
     } catch (err) {
       console.error('Camera error:', err);
       this.cameraError = true;
       this.cameraErrorMessage = err.message || 'No se pudo acceder a la c�mara.';
+      this.updateStatus('off', 'C�mara: error');
     }
   }
 
@@ -130,6 +134,12 @@ class HandDetector {
   /**
    * Umbral de estabilidad: un solo frame. El gesto est\u00e1 activo en el frame actual.
    */
+  updateStatus(kind, text) {
+    if (!this.statusEl) return;
+    this.statusEl.textContent = text;
+    this.statusEl.className = 'cameraStatus ' + kind;
+  }
+
   updateGesture(gesture) {
     if (this.currentGesture !== gesture) {
       this.lastGesture = this.currentGesture;
