@@ -80,7 +80,19 @@ class Game {
 
   bindButtons() {
     document.getElementById('btnStart').addEventListener('click', () => this.startGame());
-    document.getElementById('btnRestart').addEventListener('click', () => this.startGame());
+    document.getElementById('btnRestart').addEventListener('click', () => this.returnToMenu());
+  }
+
+  returnToMenu() {
+    // Volver al menú de inicio desde game over
+    this.state = 'start';
+    this.overlayGameOver.classList.remove('active');
+    this.overlayGameOver.classList.add('hidden');
+    this.overlayStart.classList.remove('hidden');
+    this.overlayStart.classList.add('active');
+    this.overlayPaused.classList.add('hidden');
+    this.overlayMultiHand.classList.add('hidden');
+    this.cameraErrorEl.classList.add('hidden');
   }
 
   startGame() {
@@ -111,12 +123,10 @@ class Game {
       this.jump();
     } else if (gesture === 'crouch') {
       this.crouch();
-    } else if (gesture === 'stop') {
-      this.stopChar();
     }
 
     // El fondo se mueve cuando el personaje realiza una acci�n
-    if (gesture === 'jump' || gesture === 'crouch' || gesture === 'stop') {
+    if (gesture === 'jump' || gesture === 'crouch') {
       this.bgX -= this.gameSpeed * 2;
     }
   }

@@ -27,12 +27,16 @@ El fondo debe moverse cuando el personaje realice alguna acción; el personaje e
 
 | Dedos levantados | Acción del personaje |
 |------------------|----------------------|
-| 1 dedo | Salta para esquivar obstáculos |
-| 2 dedos | Se agacha para pasar por debajo de obstáculos altos |
-| Mano abierta (5 dedos) | Se detiene |
+| Mano abierta (5 dedos) | Salta para esquivar obstáculos |
+| Mano cerrada / puño (0 dedos) | Se agacha para pasar por debajo de obstáculos altos |
+| 1, 2, 3 o 4 dedos | Sin acción definida |
 | Sin mano / cámara sin detección | El juego se pausa |
 
 Cuando la mano deja de detectarse en cualquier momento, el juego entra en pausa hasta que vuelva a detectarse una mano válida.
+
+### Reinicio de partida
+
+Cuando termina la partida y el jugador presiona **Reiniciar**, la aplicación vuelve a la pantalla de inicio (no reinicia la partida automáticamente). Desde allí debe presionar **Comenzar partida** para jugar de nuevo.
 
 ## 5. Mecánicas del juego
 
