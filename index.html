@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runner de Manos - Juego de Interaccion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+    <!-- Vista peque�a de la c�mara en una esquina -->
+    <video id="cameraPreview" autoplay playsinline muted></video>
+
+    <!-- Puntuaci�n -->
+    <div id="scoreDisplay" class="score">Tiempo: 0.0s</div>
+
+    <!-- Error de c�mara -->
+    <div id="cameraError" class="error hidden">
+      <h2>C�mara no disponible</h2>
+      <p>Se requiere acceso a la c�mara web para jugar. Permite el acceso y recarga la p�gina.</p>
+    </div>
+
+    <!-- Pantalla de inicio -->
+    <div id="overlayStart" class="overlay active">
+      <h1>Runner de Manos</h1>
+      <p>Controla al personaje con tu mano frente a la c�mara web.</p>
+      <div class="gesture-guide">
+        <h3>Gu�a de gestos</h3>
+        <div class="gesture-item">
+          <span class="finger-count">1 dedo</span>
+          <span class="action">Salta</span>
+        </div>
+        <div class="gesture-item">
+          <span class="finger-count">2 dedos</span>
+          <span class="action">Ag�chate</span>
+        </div>
+        <div class="gesture-item">
+          <span class="finger-count">Mano abierta</span>
+          <span class="action">Detente</span>
+        </div>
+      </div>
+      <button id="btnStart" class="btn">Comenzar partida</button>
+      <p class="hint">Buena iluminaci�n y fondo simple.</p>
+    </div>
+
+    <!-- Pausado (sin mano detectada) -->
+    <div id="overlayPaused" class="overlay hidden">
+      <h2>Pausado</h2>
+      <p>Muestra tu mano a la c�mara para continuar.</p>
+    </div>
+
+    <!-- Advertencia de dos o m�s manos -->
+    <div id="overlayMultiHand" class="overlay hidden">
+      <h2>&#9888; Solo una mano</h2>
+      <p>Juega con una sola mano frente a la c�mara.</p>
+    </div>
+
+    <!-- Game over -->
+    <div id="overlayGameOver" class="overlay hidden">
+      <h2>Game Over</h2>
+      <p id="finalScore">Puntaje: 0s</p>
+      <button id="btnRestart" class="btn">Reiniciar</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+  <script src="hand-detector.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
