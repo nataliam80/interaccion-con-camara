@@ -54,7 +54,6 @@ class Game {
     this.scoreEl = document.getElementById('scoreDisplay');
     this.overlayStart = document.getElementById('overlayStart');
     this.overlayPaused = document.getElementById('overlayPaused');
-    this.overlayMultiHand = document.getElementById('overlayMultiHand');
     this.overlayGameOver = document.getElementById('overlayGameOver');
     this.cameraErrorEl = document.getElementById('cameraError');
     this.finalScoreEl = document.getElementById('finalScore');
@@ -91,7 +90,6 @@ class Game {
     this.overlayStart.classList.remove('hidden');
     this.overlayStart.classList.add('active');
     this.overlayPaused.classList.add('hidden');
-    this.overlayMultiHand.classList.add('hidden');
     this.cameraErrorEl.classList.add('hidden');
   }
 
@@ -111,7 +109,6 @@ class Game {
     this.overlayStart.classList.remove('active');
     this.overlayStart.classList.add('hidden');
     this.overlayPaused.classList.add('hidden');
-    this.overlayMultiHand.classList.add('hidden');
     this.overlayGameOver.classList.add('hidden');
     this.cameraErrorEl.classList.add('hidden');
   }
@@ -252,7 +249,6 @@ class Game {
     this.overlayGameOver.classList.remove('hidden');
     this.overlayGameOver.classList.add('active');
     this.overlayPaused.classList.add('hidden');
-    this.overlayMultiHand.classList.add('hidden');
   }
 
   draw() {
@@ -347,26 +343,15 @@ class Game {
           this.state = 'paused';
           this.overlayPaused.classList.remove('hidden');
           this.overlayPaused.classList.add('active');
-          this.overlayMultiHand.classList.add('hidden');
-        } else if (gesture === 'multi') {
-          this.overlayMultiHand.classList.remove('hidden');
-          this.overlayMultiHand.classList.add('active');
-          this.overlayPaused.classList.add('hidden');
         } else {
           this.overlayPaused.classList.add('hidden');
-          this.overlayMultiHand.classList.add('hidden');
         }
       } else if (this.state === 'paused') {
-        if (gesture !== 'pause' && gesture !== 'multi') {
+        if (gesture !== 'pause') {
           this.state = 'playing';
           this.overlayPaused.classList.add('hidden');
           this.overlayPaused.classList.remove('active');
-          this.overlayMultiHand.classList.add('hidden');
           this.startTime = Date.now() - this.score * 1000;
-        } else if (gesture === 'multi') {
-          this.overlayMultiHand.classList.remove('hidden');
-          this.overlayMultiHand.classList.add('active');
-          this.overlayPaused.classList.add('hidden');
         }
       }
     }
