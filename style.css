@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +7,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background: #1a1a2e;
+  font-family: 'Roboto', sans-serif;
+  background: #0f172a;
   color: #fff;
   display: flex;
   justify-content: center;
@@ -69,16 +71,39 @@ canvas {
   border: 1px solid #ff4444;
 }
 
-/* Puntuaci�n */
-.score {
+/* Barra superior: puntuaci�n + recordatorio de gestos */
+.header-info {
   position: absolute;
   top: 10px;
   left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 10;
+}
+
+/* Puntuaci�n */
+.score {
   font-size: 1.25rem;
   font-weight: bold;
   color: #fff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-  z-index: 10;
+}
+
+/* Recordatorio de gestos */
+.gesture-reminder {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Overlays */

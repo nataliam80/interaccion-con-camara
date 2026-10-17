@@ -14,8 +14,14 @@
     <video id="cameraPreview" autoplay playsinline muted></video>
     <div id="cameraStatus" class="cameraStatus off">C�mara: iniciando...</div>
 
-    <!-- Puntuaci�n -->
-    <div id="scoreDisplay" class="score">Tiempo: 0.0s</div>
+    <!-- Puntuaci�n y recordatorio de gestos -->
+    <div class="header-info">
+      <div id="scoreDisplay" class="score">Tiempo: 0.0s</div>
+      <div class="gesture-reminder">
+        <span class="reminder-item">Mano abierta: Salta</span>
+        <span class="reminder-item">Pu�o: Ag�chate</span>
+      </div>
+    </div>
 
     <!-- Error de c�mara -->
     <div id="cameraError" class="error hidden">
@@ -26,7 +32,7 @@
     <!-- Pantalla de inicio -->
     <div id="overlayStart" class="overlay active">
       <h1>Runner de Manos</h1>
-      <p>Controla al personaje con tu mano frente a la c�mara web.</p>
+      <p>Controla al personaje con tu mano frente a la c�mara, comienza mostrando tu palma.</p>
       <div class="gesture-guide">
         <h3>Gu�a de gestos</h3>
         <div class="gesture-item">
