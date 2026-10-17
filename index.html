@@ -3,55 +3,55 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Runner de Manos - Juego de Interaccion</title>
+  <title>Runner de Manos - Juego de Interacción</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="game-container">
     <canvas id="gameCanvas" width="800" height="400"></canvas>
 
-    <!-- Vista peque�a de la c�mara en una esquina -->
+    <!-- Vista pequeña de la cámara en una esquina -->
     <video id="cameraPreview" autoplay playsinline muted></video>
-    <div id="cameraStatus" class="cameraStatus off">C�mara: iniciando...</div>
+    <div id="cameraStatus" class="cameraStatus off">Cámara: iniciando...</div>
 
-    <!-- Puntuaci�n y recordatorio de gestos -->
+    <!-- Puntuación y recordatorio de gestos -->
     <div class="header-info">
       <div id="scoreDisplay" class="score">Tiempo: 0.0s</div>
       <div class="gesture-reminder">
-        <span class="reminder-item">Mano abierta: Salta</span>
-        <span class="reminder-item">Pu�o: Ag�chate</span>
+        <span class="reminder-item">Puño (mano cerrada): Salta</span>
+        <span class="reminder-item">1 dedo levantado: Agáchate</span>
       </div>
     </div>
 
-    <!-- Error de c�mara -->
+    <!-- Error de cámara -->
     <div id="cameraError" class="error hidden">
-      <h2>C�mara no disponible</h2>
-      <p>Se requiere acceso a la c�mara web para jugar. Permite el acceso y recarga la p�gina.</p>
+      <h2>Cámara no disponible</h2>
+      <p>Se requiere acceso a la cámara web para jugar. Permite el acceso y recarga la página.</p>
     </div>
 
     <!-- Pantalla de inicio -->
     <div id="overlayStart" class="overlay active">
       <h1>Runner de Manos</h1>
-      <p>Controla al personaje con tu mano frente a la c�mara, comienza mostrando tu palma.</p>
+      <p>Controla al personaje con tu mano frente a la cámara, comienza mostrando tu palma.</p>
       <div class="gesture-guide">
-        <h3>Gu�a de gestos</h3>
+        <h3>Guía de gestos</h3>
         <div class="gesture-item">
           <span class="finger-count">Puño (mano cerrada)</span>
           <span class="action">Salta</span>
         </div>
         <div class="gesture-item">
           <span class="finger-count">1 dedo levantado</span>
-          <span class="action">Ag�chate</span>
+          <span class="action">Agáchate</span>
         </div>
       </div>
       <button id="btnStart" class="btn">Comenzar partida</button>
-      <p class="hint">Buena iluminaci�n y fondo simple</p>
+      <p class="hint">Buena iluminación y fondo simple</p>
     </div>
 
     <!-- Pausado (sin mano detectada) -->
     <div id="overlayPaused" class="overlay hidden">
       <h2>Pausado</h2>
-      <p>Muestra tu mano a la c�mara para continuar.</p>
+      <p>Muestra tu mano a la cámara para continuar.</p>
     </div>
 
     <!-- Game over -->
