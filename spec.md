@@ -19,7 +19,7 @@ El fondo debe moverse cuando el personaje realice alguna acción; el personaje e
 - La aplicación solicita acceso a la cámara al abrirse.
 - MediaPipe Hands detecta la(s) mano(s) en tiempo real y cuenta los dedos levantados.
 - **Una sola mano:** el juego corre normalmente con una mano detectada.
-- **Dos o más manos:** se muestra una advertencia centrada en pantalla que diga que solo se debe jugar con una mano; el juego no avanza mientras persista la detección de múltiples manos.
+- **Dos o más manos:** se muestra una advertencia centrada en pantalla que diga que solo se debe jugar con una mano; el juego se mantiene detenido mientras persista la detección de múltiples manos. La advertencia desaparece inmediatamente al volver a detectar una sola mano y el juego continúa.
 - **Sin mano detectada:** el juego se pausa.
 - **Umbral de estabilidad:** un gesto se activa tras mantenerse durante al menos un frame consecutivo (detección mínima de un frame).
 
