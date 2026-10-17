@@ -49,6 +49,7 @@ class Game {
     // Detector de manos
     this.detector = null;
     this.currentGesture = null;
+    this.multiHandTimer = null;
 
     // Referencias DOM
     this.scoreEl = document.getElementById('scoreDisplay');
@@ -93,6 +94,10 @@ class Game {
     this.overlayPaused.classList.add('hidden');
     this.overlayMultiHand.classList.add('hidden');
     this.cameraErrorEl.classList.add('hidden');
+    if (this.multiHandTimer) {
+      clearTimeout(this.multiHandTimer);
+      this.multiHandTimer = null;
+    }
   }
 
   startGame() {
@@ -253,6 +258,10 @@ class Game {
     this.overlayGameOver.classList.add('active');
     this.overlayPaused.classList.add('hidden');
     this.overlayMultiHand.classList.add('hidden');
+    if (this.multiHandTimer) {
+      clearTimeout(this.multiHandTimer);
+      this.multiHandTimer = null;
+    }
   }
 
   draw() {
@@ -348,13 +357,29 @@ class Game {
           this.overlayPaused.classList.remove('hidden');
           this.overlayPaused.classList.add('active');
           this.overlayMultiHand.classList.add('hidden');
+          if (this.multiHandTimer) {
+            clearTimeout(this.multiHandTimer);
+            this.multiHandTimer = null;
+          }
         } else if (gesture === 'multi') {
           this.overlayMultiHand.classList.remove('hidden');
           this.overlayMultiHand.classList.add('active');
           this.overlayPaused.classList.add('hidden');
+          if (this.multiHandTimer) {
+            clearTimeout(this.multiHandTimer);
+          }
+          this.multiHandTimer = setTimeout(() => {
+            this.overlayMultiHand.classList.remove('active');
+            this.overlayMultiHand.classList.add('hidden');
+            this.multiHandTimer = null;
+          }, 3000);
         } else {
           this.overlayPaused.classList.add('hidden');
           this.overlayMultiHand.classList.add('hidden');
+          if (this.multiHandTimer) {
+            clearTimeout(this.multiHandTimer);
+            this.multiHandTimer = null;
+          }
         }
       } else if (this.state === 'paused') {
         if (gesture !== 'pause' && gesture !== 'multi') {
@@ -363,10 +388,22 @@ class Game {
           this.overlayPaused.classList.remove('active');
           this.overlayMultiHand.classList.add('hidden');
           this.startTime = Date.now() - this.score * 1000;
+          if (this.multiHandTimer) {
+            clearTimeout(this.multiHandTimer);
+            this.multiHandTimer = null;
+          }
         } else if (gesture === 'multi') {
           this.overlayMultiHand.classList.remove('hidden');
           this.overlayMultiHand.classList.add('active');
           this.overlayPaused.classList.add('hidden');
+          if (this.multiHandTimer) {
+            clearTimeout(this.multiHandTimer);
+          }
+          this.multiHandTimer = setTimeout(() => {
+            this.overlayMultiHand.classList.remove('active');
+            this.overlayMultiHand.classList.add('hidden');
+            this.multiHandTimer = null;
+          }, 3000);
         }
       }
     }
